@@ -1,196 +1,147 @@
 #include <bits/stdc++.h>
+#include "BST.h"
 using namespace std;
 
-struct Book {
-    int id;
-    string title;
-    string author;
-};
+int BST::getHeight(Node* node) {
+    if (node == nullptr) return 0;
+    return node->height;
+}
 
-struct Node {
-    Book book;
-    Node* left;
-    Node* right;
+// Insert
+Node* BST::insert(Node* node, Book book) {
+    if (node == nullptr)
+        return new Node(book);
 
-    Node(Book book) {
-        this->book = book;
-        left = nullptr;
-        right = nullptr;
-    }
-};
+    if (book.id < node->book.id)
+        node->left = insert(node->left, book);
 
-class BST {
-public:
-    Node* root;
+    else if (book.id > node->book.id)
+        node->right = insert(node->right, book);
 
-    BST() {
-        root = nullptr;
-    }
-
-    // Insert
-    Node* insert(Node* node, Book book) {
-        if (node == nullptr)
-            return new Node(book);
-
-        if (book.id < node->book.id)
-            node->left = insert(node->left, book);
-
-        else if (book.id > node->book.id)
-            node->right = insert(node->right, book);
-
-        return node;
-    }
+    return node;
+}
 
     // Find minimum node
-    Node* minValue(Node* node) {
-        while (node && node->left != nullptr)
-            node = node->left;
+Node* BST::minValue(Node* node) {
+    while (node && node->left != nullptr)
+        node = node->left;
+    return node;
+}
+
+Node* BST::deleteNode(Node* node, int key) {
+
+    if (node == nullptr)
         return node;
-    }
 
-    Node* deleteNode(Node* node, int key) {
+    // Search
+    if (key < node->book.id)
+        node->left = deleteNode(node->left, key);
 
-        if (node == nullptr)
-            return node;
+    else if (key > node->book.id)
+        node->right = deleteNode(node->right, key);
 
-        // Search
-        if (key < node->book.id)
-            node->left = deleteNode(node->left, key);
+    else {
 
-        else if (key > node->book.id)
-            node->right = deleteNode(node->right, key);
-
-        else {
-
-            // Case 1: No child
-            if (node->left == nullptr && node->right == nullptr) {
-                delete node;
-                return nullptr;
-            }
-
-            // Case 2: One child
-            else if (node->left == nullptr) {
-                Node* temp = node->right;
-                delete node;
-                return temp;
-            }else if (node->right == nullptr) {
-                Node* temp = node->left;
-                delete node;
-                return temp;
-            }
-
-            // Case 3: Two children
-            // replace by the successor
-            Node* successor = minValue(node->right);
-
-            node->book = successor->book;
-
-            node->right = deleteNode(node->right, successor->book.id);
-        }
-
-        return node;
-    }
-
-    Node* search(Node* node, int key) {
-
-        if (node == nullptr || node->book.id == key)
-            return node;
-
-        if (key < node->book.id)
-            return search(node->left, key);
-
-        return search(node->right, key);
-    }
-
-    void printNode(Node* node) {
-        cout << "ID: " <<node->book.id
-     << " | Title: " << node->book.title
-     << " | Author: " << node->book.author << endl;
-    }
-
-    void inorder(Node* node) {
-        if (node != nullptr) {
-            inorder(node->left);
-            printNode(node);
-            inorder(node->right);
-        }
-    }
-
-    void printRange(Node* node, int low, int high) {
-
-        if (node == nullptr)
-            return;
-
-        // Visit left subtree
-        if (low < node->book.id)
-            printRange(node->left, low, high);
-
-        // Print current node
-        if (node->book.id >= low && node->book.id <= high) {
-
-            cout << node->book.id << " | "
-                 << node->book.title << " | "
-                 << node->book.author << endl;
-        }
-
-        // Visit right subtree
-        if (high > node->book.id)
-            printRange(node->right, low, high);
-    }
-
-    Node* findClosest(Node* node, int target) {
-
-        if (node == nullptr)
+        // Case 1: No child
+        if (node->left == nullptr && node->right == nullptr) {
+            delete node;
             return nullptr;
-
-        Node* closest = node;
-
-        while (node != nullptr) {
-
-            // Update closest
-            if (abs(node->book.id - target) <
-                abs(closest->book.id - target)) {
-
-                closest = node;
-                }
-
-            // Move left or right
-            if (target < node->book.id)
-                node = node->left;
-
-            else if (target > node->book.id)
-                node = node->right;
-
-            else
-                return node; // exact match
         }
 
-        return closest;
+        // Case 2: One child
+        else if (node->left == nullptr) {
+            Node* temp = node->right;
+            delete node;
+            return temp;
+        }else if (node->right == nullptr) {
+            Node* temp = node->left;
+            delete node;
+            return temp;
+        }
+
+        // Case 3: Two children
+        // replace by the successor
+        Node* successor = minValue(node->right);
+
+        node->book = successor->book;
+
+        node->right = deleteNode(node->right, successor->book.id);
     }
-};
 
-void insertFromFile(string filename, BST& tree) {
-    ifstream file(filename);
-    string line;
-    while (getline(file, line)) {
-        stringstream ss(line);
-        string idStr, title, author;
+    return node;
+}
 
-        getline(ss, idStr, ',');
-        getline(ss, title, ',');
-        getline(ss, author);
+Node* BST::search(Node* node, int key) {
+    if (node == nullptr || node->book.id == key)
+        return node;
 
-        Book book;
-        book.id = stoi(idStr);
-        book.title = title;
-        book.author = author;
-        tree.root = tree.insert(tree.root, book);
+    if (key < node->book.id)
+        return search(node->left, key);
+
+    return search(node->right, key);
+}
+
+void BST::printNode(Node* node) {
+    cout << "ID: " <<node->book.id
+    << " | Title: " << node->book.title
+    << " | Author: " << node->book.author << endl;
+}
+
+void BST::inorder(Node* node) {
+    if (node != nullptr) {
+        inorder(node->left);
+        printNode(node);
+        inorder(node->right);
     }
 }
 
-int main() {
-    BST tree;
-    insertFromFile("RandomBooks.txt", tree);
-    tree.inorder(tree.root);
-    return 0;
+void BST::printRange(Node* node, int low, int high) {
+
+    if (node == nullptr)
+        return;
+
+    // Visit left subtree
+    if (low < node->book.id)
+        printRange(node->left, low, high);
+
+    // Print current node
+    if (node->book.id >= low && node->book.id <= high) {
+
+        cout << node->book.id << " | "
+        << node->book.title << " | "
+        << node->book.author << endl;
+    }
+
+    // Visit right subtree
+    if (high > node->book.id)
+        printRange(node->right, low, high);
+}
+
+Node* BST::findClosest(Node* node, int target) {
+    if (node == nullptr)
+        return nullptr;
+
+    Node* closest = node;
+
+    while (node != nullptr) {
+
+        // Update closest
+        if (abs(node->book.id - target) <
+            abs(closest->book.id - target)) {
+
+            closest = node;
+            }
+
+        // Move left or right
+        if (target < node->book.id)
+            node = node->left;
+
+        else if (target > node->book.id)
+            node = node->right;
+
+        else
+            return node; // exact match
+    }
+
+    return closest;
 }
