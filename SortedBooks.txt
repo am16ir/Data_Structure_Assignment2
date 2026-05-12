@@ -1,0 +1,30 @@
+5,The Silent Ocean,Michael Reed
+8,Shadows of Tomorrow,Emma Carter
+11,Data Structures Simplified,Daniel Moore
+14,The Lost Kingdom,Sophia Turner
+17,Algorithms in Practice,James Walker
+20,Mystery at Blackwood,Liam Harris
+23,Cloud Computing Basics,Olivia Scott
+26,Journey Beyond Stars,Noah Bennett
+29,The Last Empire,Isabella Young
+32,Machine Learning Essentials,Ethan Hall
+35,Secrets of the Nile,Mia Adams
+38,Modern C++ Guide,Alexander King
+41,Whispers in the Wind,Charlotte Green
+44,Database Design Concepts,Benjamin Clark
+47,The Hidden Truth,Amelia Baker
+50,Artificial Intelligence Today,William Lewis
+53,The Forgotten Path,Evelyn Wright
+56,Operating Systems Explained,Henry Lopez
+59,The Crystal Island,Abigail Hill
+62,Networking Fundamentals,Lucas Rivera
+65,Legends of Avalon,Harper Mitchell
+68,Software Engineering Principles,Elijah Perez
+71,The Dark Horizon,Scarlett Roberts
+74,Cybersecurity Essentials,Jack Turner
+77,The Ancient Code,Grace Phillips
+80,Web Development Mastery,Sebastian Campbell
+83,Echoes of Eternity,Chloe Parker
+86,Python for Beginners,Matthew Evans
+89,The Midnight Secret,Lily Edwards
+92,Advanced Database Systems,David Collins
