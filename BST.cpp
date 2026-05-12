@@ -4,10 +4,9 @@ using namespace std;
 
 int BST::getHeight(Node* node) {
     if (node == nullptr) return 0;
-    return max(getHeight(node->left), getHeight(node->right)) + 1;
+    return 1 + max(getHeight(node->left), getHeight(node->right));
 }
 
-// Insert
 Node* BST::insert(Node* node, Book book) {
     if (node == nullptr)
         return new Node(book);
@@ -23,7 +22,6 @@ Node* BST::insert(Node* node, Book book) {
     return node;
 }
 
-    // Find minimum node
 Node* BST::minValue(Node* node) {
     while (node && node->left != nullptr)
         node = node->left;
@@ -102,23 +100,16 @@ void BST::inorder(Node* node) {
 }
 
 void BST::printRange(Node* node, int low, int high) {
-
     if (node == nullptr)
         return;
 
-    // Visit left subtree
     if (low < node->book.id)
         printRange(node->left, low, high);
 
-    // Print current node
     if (node->book.id >= low && node->book.id <= high) {
-
-        cout << node->book.id << " | "
-        << node->book.title << " | "
-        << node->book.author << endl;
+        printNode(node);
     }
 
-    // Visit right subtree
     if (high > node->book.id)
         printRange(node->right, low, high);
 }
@@ -131,14 +122,12 @@ Node* BST::findClosest(Node* node, int target) {
 
     while (node != nullptr) {
 
-        // Update closest
         if (abs(node->book.id - target) <
             abs(closest->book.id - target)) {
 
             closest = node;
             }
 
-        // Move left or right
         if (target < node->book.id)
             node = node->left;
 
@@ -146,7 +135,7 @@ Node* BST::findClosest(Node* node, int target) {
             node = node->right;
 
         else
-            return node; // exact match
+            return node;
     }
 
     return closest;

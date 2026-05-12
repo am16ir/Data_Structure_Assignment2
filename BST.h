@@ -44,37 +44,17 @@ public:
 
     virtual Node* deleteNode(Node* node, int key);
 
-    static Node* search(Node* node, int key, int& steps);
+    Node* search(Node* node, int key, int& steps);
 
-    static int get_steps(Node* node);
+    void printNode(Node* node);
 
-    static void printNode(Node* node);
+    void inorder(Node* node);
 
-    static void inorder(Node* node);
+    void printRange(Node* node, int low, int high);
 
-    static void printRange(Node* node, int low, int high);
-
-    static Node* findClosest(Node* node, int target);
+    Node* findClosest(Node* node, int target);
 
 };
 
-inline void insertFromFile(string filename, BST& tree) {
-    ifstream file(filename);
-    string line;
-    while (getline(file, line)) {
-        stringstream ss(line);
-        string idStr, title, author;
-
-        getline(ss, idStr, ',');
-        getline(ss, title, ',');
-        getline(ss, author);
-
-        Book book;
-        book.id = stoi(idStr);
-        book.title = title;
-        book.author = author;
-        tree.root = tree.insert(tree.root, book);
-    }
-}
 
 #endif //BST_H
