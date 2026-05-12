@@ -44,7 +44,9 @@ public:
 
     virtual Node* deleteNode(Node* node, int key);
 
-    static Node* search(Node* node, int key);
+    static Node* search(Node* node, int key, int& steps);
+
+    static int get_steps(Node* node);
 
     static void printNode(Node* node);
 

@@ -4,7 +4,7 @@ using namespace std;
 
 int BST::getHeight(Node* node) {
     if (node == nullptr) return 0;
-    return node->height;
+    return max(getHeight(node->left), getHeight(node->right)) + 1;
 }
 
 // Insert
@@ -17,6 +17,8 @@ Node* BST::insert(Node* node, Book book) {
 
     else if (book.id > node->book.id)
         node->right = insert(node->right, book);
+
+    node->height = 1 + max(getHeight(node->left), getHeight(node->right));
 
     return node;
 }
@@ -68,18 +70,22 @@ Node* BST::deleteNode(Node* node, int key) {
         node->right = deleteNode(node->right, successor->book.id);
     }
 
+    node->height = 1 + max(getHeight(node->left), getHeight(node->right));
+
     return node;
 }
 
-Node* BST::search(Node* node, int key) {
+Node* BST::search(Node* node, int key, int& steps) {
+    steps++;
     if (node == nullptr || node->book.id == key)
         return node;
 
     if (key < node->book.id)
-        return search(node->left, key);
+        return search(node->left, key, steps);
 
-    return search(node->right, key);
+    return search(node->right, key, steps);
 }
+
 
 void BST::printNode(Node* node) {
     cout << "ID: " <<node->book.id
